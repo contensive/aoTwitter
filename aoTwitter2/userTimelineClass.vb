@@ -5,6 +5,7 @@
         '
         Public Overrides Function Execute(ByVal CP As BaseClasses.CPBaseClass) As Object
             Dim s As String = ""
+            Dim hint As String = "enter"
             '
             Try
                 Dim inS As String = ""
@@ -27,35 +28,46 @@
                 Dim dToday As Date = Date.Today
                 Dim postedString As String = ""
                 '
+                hint &= ",1"
                 If count = 0 Then
                     count = 5
                 End If
                 '
+                hint &= ",2"
                 tService.AuthenticateWith(_accessToken, _accessTokenSecret)
                 '
+                hint &= ",3"
                 If username = "" Then
                     username = "contensivenews"
                     title = "Contensive News"
                 End If
                 '
+                hint &= ",4"
                 tOptions.ScreenName = username
                 tOptions.Count = count
                 '
+                hint &= ",5"
                 Dim tweets As System.Collections.Generic.IEnumerable(Of TweetSharp.TwitterStatus) = tService.ListTweetsOnUserTimeline(tOptions)
                 '
+                hint &= ",6"
                 If username <> "" Then
+                    hint &= ",7"
                     If title <> "" Then
                         s += CP.Html.h2(title, , "sidebar-title")
                     End If
                     '
+                    hint &= ",8"
                     For Each tweet As TweetSharp.TwitterStatus In tweets
+                        hint &= ",9"
                         tweetCopy = tweet.Text
                         numberOfDays = CStr(dToday.Subtract(tweet.CreatedDate).Days)
                         '
+                        hint &= ",10"
                         If numberOfDays > 0 Then
                             postedString = CP.Html.p("about " & numberOfDays & " days ago", , "twitterPostedDate")
                         End If
                         '
+                        hint &= ",11"
                         If tweetCopy.Contains("http") Then
                             linkStart = tweetCopy.IndexOf("http")
                             linkEnd = tweetCopy.IndexOf(" ", linkStart)
@@ -69,14 +81,17 @@
                             tweetCopy = tweetCopy.Replace(link, "<a target=""_blank"" href=""" & link & """>" & link & "</a>")
                         End If
                         '
+                        hint &= ",12"
                         'inS += CP.Html.li(tweetCopy & CP.Html.p(tweet.CreatedDate.ToShortDateString))
                         inS += CP.Html.li(tweetCopy & postedString)
                     Next
                     '
+                    hint &= ",13"
                     s += CP.Html.ul(inS, , , "twitter_update_list")
                     s += CP.Html.div("<a class=""twitter-link"" href=""" & CP.Request.Protocol & "twitter.com/" & username & """ id=""twitter-link"">follow me on Twitter</a>", , , "twitter-link_div")
                     s = CP.Html.div(s, , "twitter_div", "twitter_div")
                 Else
+                    hint &= ",14"
                     s = "" _
                         & " This addon creates a list of tweets from a specific Twitter account.</p>" _
                         & "<p>Please turn on advanced edit and click the addon options icon to set the Twitter username of the account you want to display.</p>" _
@@ -86,7 +101,7 @@
                 End If
             Catch ex As Exception
                 Try
-                    CP.Site.ErrorReport(ex, "error in Contensive.Addons.aoTwitter.userTimelineClass.userTimelineClass")
+                    CP.Site.ErrorReport(ex, "error in Contensive.Addons.aoTwitter.userTimelineClass.userTimelineClass, hint=[" & hint & "]")
                 Catch errObj As Exception
                 End Try
             End Try
