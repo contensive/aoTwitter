@@ -10,6 +10,7 @@
             Try
                 Dim inS As String = ""
                 Dim username As String = CP.Doc.Var("Username")
+                Dim followMeCaption As String = CP.Doc.Var("Follow Me Caption")
                 Dim title As String = CP.Doc.Var("Title")
                 Dim count = CP.Utils.EncodeNumber(CP.Doc.Var("Tweets to display"))
                 '
@@ -47,6 +48,12 @@
                 If username = "" Then
                     username = "contensivenews"
                     title = "Contensive News"
+                End If
+                If title = "" Then
+                    title = username
+                End If
+                If followMeCaption = "" Then
+                    followMeCaption = title
                 End If
                 cacheName = "twitter-" & username
                 cacheEntity = CP.Cache.Read(cacheName)
@@ -122,7 +129,7 @@
                         '
                         hint &= ",13"
                         returnHtml += CP.Html.ul(inS, , , "twitter_update_list")
-                        returnHtml += CP.Html.div("<a class=""twitter-link"" href=""" & CP.Request.Protocol & "twitter.com/" & username & """ id=""twitter-link"">follow me on Twitter</a>", , , "twitter-link_div")
+                        returnHtml += CP.Html.div("<a target=""_blank"" class=""twitter-link"" href=""" & CP.Request.Protocol & "twitter.com/" & username & """ id=""twitter-link"">follow " & followMeCaption & " on Twitter</a>", , , "twitter-link_div")
                         returnHtml = CP.Html.div(returnHtml, , "twitter_div", "twitter_div")
                         cacheTimeoutSeconds = 60 + (60 * Rnd())
                         Call CP.Cache.Save("twitter-" & username, Date.Now.AddSeconds(cacheTimeoutSeconds) & vbCrLf & returnHtml)
