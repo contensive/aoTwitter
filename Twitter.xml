@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<Collection name="Twitter" guid="{EADB8DAF-CC49-404E-AEDE-71AEE9C9BFEC}" system="No" updatable="Yes" blockNavigatorNode="No">
+	<HelpLink></HelpLink>
+	<Help>&lt;p&gt;All twitter features have been transfered to the Social Media Collection. The Twitter Collection is no longer needed and can be safely remote with the Addon manager.&lt;/p&gt;</Help>
+	<ImportCollection name="Social Media">{3B4362B9-5556-4890-B049-56B31B869C64}</ImportCollection>
+</Collection>
